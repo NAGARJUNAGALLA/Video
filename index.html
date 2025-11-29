@@ -1,0 +1,44 @@
+<div style="text-align:center; margin-top:20px;">
+  <h3>Telugu Text to Speech & Download</h3>
+  <textarea id="teluguText" rows="40" cols="100" placeholder="ఇక్కడ తెలుగులో టైప్ చేయండి"></textarea><br><br>
+  <button onclick="speakAndRecord()">Generate & Download Audio</button>
+</div>
+
+<script>
+async function speakAndRecord() {
+    const text = document.getElementById("teluguText").value.trim();
+    if (!text) {
+        alert("దయచేసి టెక్స్ట్ ఎంటర్ చేయండి");
+        return;
+    }
+
+    // Create a SpeechSynthesisUtterance for Telugu
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'te-IN';
+
+    // Create a MediaStream destination
+    const audioContext = new AudioContext();
+    const destination = audioContext.createMediaStreamDestination();
+    const source = audioContext.createMediaStreamSource(destination.stream);
+    const recorder = new MediaRecorder(destination.stream);
+
+    let chunks = [];
+    recorder.ondataavailable = e => chunks.push(e.data);
+    recorder.onstop = e => {
+        const blob = new Blob(chunks, { type: 'audio/mp3' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'telugu_audio.mp3';
+        a.click();
+    };
+
+    recorder.start();
+
+    // Speak the text
+    speechSynthesis.speak(utterance);
+
+    // Stop recording when speech ends
+    utterance.onend = () => recorder.stop();
+}
+</script>
