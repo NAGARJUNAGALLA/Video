@@ -13,26 +13,27 @@
     }
     h2 {
         text-align: center;
+        margin-bottom: 10px;
+    }
+    video {
+        width: 100%;
+        border-radius: 10px;
+        background: black;
+        margin-bottom: 20px;
     }
     .btn {
         width: 100%;
         background: #1e3e8e;
         color: white;
-        padding: 15px;
+        padding: 14px;
         border: none;
-        margin: 10px 0;
-        text-align: left;
+        margin: 8px 0;
         font-size: 18px;
         border-radius: 8px;
+        text-align: left;
     }
     .btn:hover {
         background: #335edb;
-    }
-    video {
-        width: 100%;
-        margin-top: 20px;
-        border-radius: 10px;
-        background: black;
     }
 </style>
 </head>
@@ -41,28 +42,32 @@
 
 <h2>GitHub Video Player</h2>
 
-<!-- Video Container -->
+<!-- Video Player on TOP -->
 <video id="videoPlayer" controls></video>
 
+<div id="buttonsContainer"></div>
+
 <script>
-    // Add your GitHub RAW video links here
+    // Add videos from any GitHub repository
     const videoList = [
-        { title: "Introduction Video", url: "https://raw.githubusercontent.com/USERNAME/REPO/main/videos/video1.mp4" },
-        { title: "Lesson 1", url: "https://raw.githubusercontent.com/USERNAME/REPO/main/videos/video2.mp4" },
-        { title: "Lesson 2", url: "https://raw.githubusercontent.com/NAGARJUNAGALLA/Video/main/2letterwords.mp4" }
+        { title: "2 Letter Words", url: "https://raw.githubusercontent.com/NAGARJUNAGALLA/Video/main/2letterwords.mp4" },
+        { title: "Lesson 1 (Repo 2)", url: "https://raw.githubusercontent.com/NAGARJUNAGALLA/Video/main/3letterwords.mp4" },
+        { title: "Chapter 3 (Repo 3)", url: "https://raw.githubusercontent.com/USERNAME3/REPO3/main/chapter3.mp4" }
     ];
 
-    // Create buttons dynamically
+    const container = document.getElementById("buttonsContainer");
+
+    // Create buttons
     videoList.forEach(v => {
         let btn = document.createElement("button");
-        btn.innerText = v.title;
         btn.className = "btn";
+        btn.innerText = v.title;
         btn.onclick = () => playVideo(v.url);
-        document.body.insertBefore(btn, document.getElementById("videoPlayer"));
+        container.appendChild(btn);
     });
 
     function playVideo(url) {
-        let player = document.getElementById("videoPlayer");
+        const player = document.getElementById("videoPlayer");
         player.src = url;
         player.play();
     }
